@@ -136,7 +136,7 @@ class GUI:
     def create_rules_screen(self):
         self.fill_screen()
         self.render_box(RED, BACK_BUTTON_LOCATION, 'Back', BACK_TEXT_LOCATION, WHITE)
-        self.render_multiple_lines_of_text(RULES, RULES_FONT_SIZE, RULES_X, RULES_START_Y, RULES_Y_INTERVAL, WHITE)
+        self.render_multiple_lines_of_text(RULES, RULES_FONT_SIZE, RULES_X, RULES_START_Y, RULES_Y_INTERVAL, BLACK)
 
     def update_rules_screen_mouse_motion(self, mouse_x, mouse_y, next_mouse_x, next_mouse_y):
         self.update_back_button_mouse_hover(mouse_x, mouse_y, next_mouse_x, next_mouse_y)      

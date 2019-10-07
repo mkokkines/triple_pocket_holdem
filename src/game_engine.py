@@ -132,7 +132,7 @@ class GameEngine:
         player = Player('Player', STARTING_CHIP_NUMBER)
         dealer = Player('Dealer', STARTING_CHIP_NUMBER)
         self.gui.create_play_screen()
-        self.pause(700)
+        self.pause(500)
         
         while True:
             deck = Deck()
@@ -152,7 +152,7 @@ class GameEngine:
             self.gui.reveal_player_cards(player, dealer)
             self.pause(2000)
             self.gui.reveal_common_cards(community_cards)
-            self.pause(10000)
+            self.pause(5000)
 
             # Determine the best hand held by each player and who won the round
             # Add or subtract chips from the player and dealer totals depending on the outcome
@@ -172,7 +172,7 @@ class GameEngine:
                 player.num_chips, 
                 dealer.num_chips
             )
-            self.pause(1500)
+            self.pause(4000)
             
             # Get the next action from the user/
             # If the game has ended (i.e. the user or dealer has run out of chips),
@@ -234,7 +234,7 @@ class GameEngine:
         does not pick up these cards, they are forced to accept the third set of cards.
         """
         self.gui.show_hand_select_instructions()
-        self.pause(800)
+        self.pause(2000)
         
         first_hand = deck.draw_two_card_hand()
         second_hand = deck.draw_two_card_hand()
