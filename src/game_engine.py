@@ -45,9 +45,9 @@ class GameEngine:
         sub-loop to call.
         The action is initially set to the menu option, meaning that it will run
         the game logic for the opening menu screen.
-        If the action is set to rules, we will run the logic for the rules screen (which
+        If the action is set to rules, it will run the logic for the rules screen (which
         specifies the rules of the game).
-        If the action is set to the play option, we will run the logic for the game itself.
+        If the action is set to the play option, it will run the logic for the game itself.
         """
         action = MENU_NOW
         
@@ -61,16 +61,13 @@ class GameEngine:
     
     def run_menu_loop(self):
         """
-        The application opens to a nenu screen. This function provides the control flow for 
-        the application when we are on the menu screen.
-
-        As with all other game loops, this loop exits when we receive a quit event.
-        When there is mouse motion, we register the position on the screen and change
-        the appearance of buttons as the user hovers over them.
-
-        When the mouse is clicked, the function checks if we have either clicked
-        the play button or the rules button (the two menu options). If we have,
-        we exit this loop and enter the play or rules loop (as appropriate).
+        Controls the application when the user is on the menu screen.
+        Exit when the user quits the application.
+        Register the position of the mouse on the screen when the user moves the mouse. 
+        Change the color of buttons when the user hovers over them.
+        When a user clicks the mouse, check if he/she has either clicked
+        the play button or the rules button (the two menu options). If the user has,
+        exit this loop and enter the play or rules loop (as appropriate).
         """
         self.gui.create_menu_screen()  
 
@@ -92,13 +89,12 @@ class GameEngine:
 
     def run_rules_loop(self):
         """
-        This loop controls the application when the user is on the rules screen.
-
-        The loop terminates when the user quits the application.
-        When there is mouse motion, we register the position on the screen and change
-        the appearance of buttons as the user hovers over them.
+        Controls the application when the user is on the rules screen.
+        Exit when the user quits the application.
+        Register the position of the mouse on the screen when the user moves the mouse. 
+        Change the color of buttons when the user hovers over them.
     
-        When the user clicks the back button, we return them to the menu screen.        
+        Return to the menu screen when the user clicks the back button.  
         """
         self.gui.create_rules_screen()
 
@@ -117,17 +113,15 @@ class GameEngine:
     
     def run_play_loop(self):
         """
-        This is the function that controls the application when the user is playing Triple Pocket 
-        Hold'Em.
-
-        It starts by intializing the players and the playing screen.
-        It then enters the loop. Each loop iteration carries the user through one round of the game. 
-        More specifically, it:
-        1) Initialized and shuffles a deck of cards.
-        2) Prmopt the user  to place a wage
-        3) Presents the card options in front of the user and allows them to select cards
-        4) Determines the best poker hand held by each player and the outcome of the game
-        5) Adds or deducts chips accordingly
+        Controls the application when the user is playing Triple Pocket Hold'Em.
+        Start by intializing the players and the playing screen. Then enter the loop. 
+        Each loop iteration carries the user through one round of the game. 
+        More specifically:
+        1) Initialize and shuffle a deck of cards.
+        2) Prompt the user to place a wager.
+        3) Present the pocket card options to the user.
+        4) Determine the best poker hand held by each player and the outcome of the game.
+        5) Add or deduct chips from the player and dealer accordingly
         """        
         player = Player('Player', STARTING_CHIP_NUMBER)
         dealer = Player('Dealer', STARTING_CHIP_NUMBER)
@@ -155,8 +149,8 @@ class GameEngine:
             self.pause(5000)
 
             # Determine the best hand held by each player and who won the round
-            # Add or subtract chips from the player and dealer totals depending on the outcome
-            # Output to the user which hand the dealer had and what the consequent result was
+            # Add or subtract chips from the player and dealer's totals depending on the outcome
+            # Output to the user which poker hand the dealer had and what the consequent result was
             (player_hand, dealer_hand, player_wager_multiple, dealer_wager_multiple) = determine_outcome(
                 player.hands[0], 
                 dealer.hands[0], 
@@ -174,9 +168,9 @@ class GameEngine:
             )
             self.pause(4000)
             
-            # Get the next action from the user/
+            # Get the next action from the user
             # If the game has ended (i.e. the user or dealer has run out of chips),
-            # they can elect to play again. Otherwise, they can elect to continue with
+            # the user can elect to play again. Otherwise, the user can elect to continue with
             # another round in the current game or to exit
             next_action = self.get_action_at_round_end(player, dealer)
             if next_action == MENU_NOW:
@@ -191,14 +185,13 @@ class GameEngine:
     
     def get_wager(self, player, dealer):
         """
-        This is the control logic that prompts the user to input an amount
-        of chips they would like to wager and returns the result.
-
-        As with the rest of the application, when there is mouse motion, we register the position 
-        on the screen and change the appearance of buttons as the user hovers over them.
-
-        When the user clicks the plus button, increase their wager. When the user clicks the minus button,
-        decrease their wager. When the  user clicks confirm, return the magnitude of their wager.
+        Implements the control logic that prompts the user to input an amount
+        of chips to wager. Returns the wager.
+        When the user clicks the plus button, increase the wager. When the user clicks the minus button,
+        decrease the wager. When the  user clicks confirm, return the magnitude of their wager.
+        Exit when the user quits the application.
+        Register the position of the mouse on the screen when the user moves the mouse. 
+        Change the color of buttons when the user hovers over them.
         """
         max_possible_wager = min(player.num_chips, dealer.num_chips)
         wager = min(INITIAL_WAGER, max_possible_wager)
@@ -225,13 +218,12 @@ class GameEngine:
     
     def select_cards(self, deck, player, dealer):
         """
-        This provides the game logic that presents the user with his/her 
-        (maximum) three options for pocket cards.
-        It first draws the three sets of pocket cards. It then shows the first 
-        hand to the user and waits for them to make a decision. If the user picks up
-        the cards, we assign the pocket cards and return.
-        Otherwise, we present the user with the second set of pocket cards. If the user
-        does not pick up these cards, they are forced to accept the third set of cards.
+        Provides the game logic that presents the user with his/her (maximum) three options for pocket cards.
+        Draw three sets of pocket cards. Show the first pair to the user. 
+        Wait for the user to make a decision. If the user picks up the cards, assign the user the pocket cards 
+        and return.
+        Otherwise, present the user with the second pair of pocket cards. If the user
+        does not pick up these cards, he/she is forced to accept the third pair of cards.
         """
         self.gui.show_hand_select_instructions()
         self.pause(2000)
@@ -260,9 +252,7 @@ class GameEngine:
     
     def picked_up_cards(self):
         """
-        This provides the loop that waits as the user decides whether to pick up a given set of cards
-        or not. As  usual, we change the colors of the button as the user moves their mouse over them.
-
+        Waits as the user decides whether to pick up a given pair of pocket cards.
         Return true if the user accepts the cards and false if the user rejects the cards.
         """
         while True: 
@@ -282,10 +272,11 @@ class GameEngine:
     
     def get_action_at_round_end(self, player, dealer):
         """
-        After a round has been played, the user is presented with the option of playing 
-        another round. This logic determines:
-        a) should a new  game (i.e. reset the chip totals) start or not
-        b) collects the user input on whether to exit or start another round
+        When a round finishes, the user is presented with the option of playing another round.
+        If the user or dealer has no remaining chips, start a new game (i.e. reset the chip totals). 
+        Otherwise, play another round with the current chip totals.
+        
+        Returns the user's decision on whether to exit or start another round. 
         """
         if dealer.no_chips_remaining():
             self.gui.show_victory(player.num_chips, dealer.num_chips)
