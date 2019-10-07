@@ -43,7 +43,7 @@ class GameEngine:
         """
         The main game loop, based on an action variable, determines which 
         sub-loop to call.
-        The action is initially set the menu option, meaning that it will run
+        The action is initially set to the menu option, meaning that it will run
         the game logic for the opening menu screen.
         If the action is set to rules, we will run the logic for the rules screen (which
         specifies the rules of the game).
